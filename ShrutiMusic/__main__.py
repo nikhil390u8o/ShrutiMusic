@@ -21,7 +21,7 @@
 
 import os
 import threading
-from flask import Flask
+import Flask
 from ShrutiMusic import app  # your bot’s main import
 
 flask_app = Flask(name)
