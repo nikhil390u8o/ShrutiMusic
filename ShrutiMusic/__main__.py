@@ -21,8 +21,10 @@
 
 import os
 import threading
+import asyncio
 from flask import Flask
 from ShrutiMusic import app  # your bot’s main import
+from pyrogram import idle
 
 flask_app = Flask(__name__)
 
@@ -35,7 +37,9 @@ def run_flask():
     flask_app.run(host="0.0.0.0", port=port)
 
 def run_bot():
-    app.run()
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(app.start())  # start bot
+    loop.run_until_complete(idle())       # keep listening for updates
 
 if __name__ == "__main__":
     # Start Flask in background
