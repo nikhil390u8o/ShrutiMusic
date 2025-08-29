@@ -94,6 +94,83 @@ async def start_pm(client, message: Message, _):
                 thumbnail = result["thumbnails"][0]["url"].split("?")[0]
                 channellink = result["channel"]["link"]
                 channel = result["channel"]["name"]
+import time
+import random
+
+from pyrogram import filters
+from pyrogram.enums import ChatType
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
+from youtubesearchpython.__future__ import VideosSearch
+
+import config
+from ShrutiMusic import app
+from ShrutiMusic.misc import _boot_
+from ShrutiMusic.plugins.sudo.sudoers import sudoers_list
+from ShrutiMusic.utils.database import (
+    add_served_chat,
+    add_served_user,
+    blacklisted_chats,
+    get_lang,
+    is_banned_user,
+    is_on_off,
+)
+from ShrutiMusic.utils import bot_sys_stats
+from ShrutiMusic.utils.decorators.language import LanguageStart
+from ShrutiMusic.utils.formatters import get_readable_time
+from ShrutiMusic.utils.inline import help_pannel_page1, private_panel, start_panel
+from config import BANNED_USERS
+from strings import get_string
+
+# Random stickers list
+RANDOM_STICKERS = [
+    "CAACAgUAAxkBAAEEnzFor872a_gYPHu-FxIwv-nxmZ5U8QACyBUAAt5hEFVBanMxRZCc7h4E",
+    "CAACAgUAAxkBAAEEnzJor88q_xRO1ljlwh_I6fRF7lDR-AACnBsAAlckCFWNCpez-HzWHB4E",
+    "CAACAgUAAxkBAAEEnzNor88uPuVTSyRImyVXsu1pqrpRLgACKRMAAvOEEFUpvggmgDu6bx4E",
+    "CAACAgUAAxkBAAEEnzRor880z_spEYEnEfyFXN55tNwydQACIxUAAosKEVUB8iqZMVYroR4E"
+]
+
+# fallback photo if config.START_IMG_URL is empty
+DEFAULT_START_IMG = "https://files.catbox.moe/1f21lw.jpg"
+
+
+@app.on_message(filters.command(["start"]) & filters.private & ~BANNED_USERS)
+@LanguageStart
+async def start_pm(client, message: Message, _):
+    # Send random sticker first
+    random_sticker = random.choice(RANDOM_STICKERS)
+    await message.reply_sticker(sticker=random_sticker)
+    
+    await add_served_user(message.from_user.id)
+    if len(message.text.split()) > 1:
+        name = message.text.split(None, 1)[1]
+        if name[0:4] == "help":
+            keyboard = help_pannel(_)
+            return await message.reply_photo(
+                photo=config.START_IMG_URL or DEFAULT_START_IMG,
+                caption=_["help_1"].format(config.SUPPORT_GROUP),
+                protect_content=True,
+                reply_markup=keyboard,
+            )
+        if name[0:3] == "sud":
+            await sudoers_list(client=client, message=message, _=_)
+            if await is_on_off(2):
+                return await app.send_message(
+                    chat_id=config.LOG_GROUP_ID,
+                    text=f"{message.from_user.mention} ᴊᴜsᴛ sᴛᴀʀᴛᴇᴅ ᴛʜᴇ ʙᴏᴛ ᴛᴏ ᴄʜᴇᴄᴋ <b>sᴜᴅᴏʟɪsᴛ</b>.\n\n<b>ᴜsᴇʀ ɪᴅ :</b> <code>{message.from_user.id}</code>\n<b>ᴜsᴇʀɴᴀᴍᴇ :</b> @{message.from_user.username}",
+                )
+            return
+        if name[0:3] == "inf":
+            m = await message.reply_text("🔎")
+            query = (str(name)).replace("info_", "", 1)
+            query = f"https://www.youtube.com/watch?v={query}"
+            results = VideosSearch(query, limit=1)
+            for result in (await results.next())["result"]:
+                title = result["title"]
+                duration = result["duration"]
+                views = result["viewCount"]["short"]
+                thumbnail = result["thumbnails"][0]["url"].split("?")[0]
+                channellink = result["channel"]["link"]
+                channel = result["channel"]["name"]
                 link = result["link"]
                 published = result["publishedTime"]
             searched_text = _["start_6"].format(
@@ -123,7 +200,7 @@ async def start_pm(client, message: Message, _):
         out = private_panel(_)
         UP, CPU, RAM, DISK = await bot_sys_stats()
         await message.reply_photo(
-            photo=config.START_IMG_URL,
+            photo=config.START_IMG_URL or DEFAULT_START_IMG,
             caption=_["start_2"].format(message.from_user.mention, app.mention, UP, DISK, CPU, RAM),
             reply_markup=InlineKeyboardMarkup(out),
         )
@@ -144,7 +221,7 @@ async def start_gp(client, message: Message, _):
     out = start_panel(_)
     uptime = int(time.time() - _boot_)
     await message.reply_photo(
-        photo=config.START_IMG_URL,
+        photo=config.START_IMG_URL or DEFAULT_START_IMG,
         caption=_["start_1"].format(app.mention, get_readable_time(uptime)),
         reply_markup=InlineKeyboardMarkup(out),
     )
@@ -183,7 +260,7 @@ async def welcome(client, message: Message):
 
                 out = start_panel(_)
                 await message.reply_photo(
-                    photo=config.START_IMG_URL,
+                    photo=config.START_IMG_URL or DEFAULT_START_IMG,
                     caption=_["start_3"].format(
                         message.from_user.first_name,
                         app.mention,
