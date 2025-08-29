@@ -18,6 +18,8 @@
 #
 # Contact for permissions:
 # Email: badboy809075@gmail.com
+
+
 import asyncio
 import importlib
 from pyrogram import idle
@@ -25,7 +27,7 @@ from pyrogram.types import BotCommand
 from pytgcalls.exceptions import NoActiveGroupCall
 import config
 from ShrutiMusic import LOGGER, app, userbot
-from ShrutiMusic.core.call import Aviax
+from ShrutiMusic.core.call import Nand
 from ShrutiMusic.misc import sudo
 from ShrutiMusic.plugins import ALL_MODULES
 from ShrutiMusic.utils.database import get_banned_users, get_gbanned
@@ -159,10 +161,10 @@ async def init():
     LOGGER("ShrutiMusic.plugins").info("Successfully Imported Modules...")
 
     await userbot.start()
-    await Aviax.start()
+    await Nand.start()
 
     try:
-        await Aviax.stream_call("https://te.legra.ph/file/29f784eb49d230ab62e9e.mp4")
+        await Nand.stream_call("https://te.legra.ph/file/29f784eb49d230ab62e9e.mp4")
     except NoActiveGroupCall:
         LOGGER("ShrutiMusic").error(
             "Please turn on the videochat of your log group\channel.\n\nStopping Bot..."
@@ -171,7 +173,7 @@ async def init():
     except:
         pass
 
-    await Aviax.decorators()
+    await Nand.decorators()
 
     LOGGER("ShrutiMusic").info(
         "\x53\x68\x72\x75\x74\x69\x20\x4d\x75\x73\x69\x63\x20\x53\x74\x61\x72\x74\x65\x64\x20\x53\x75\x63\x63\x65\x73\x73\x66\x75\x6c\x6c\x79\x2e\x0a\x0a\x44\x6f\x6e\x27\x74\x20\x66\x6f\x72\x67\x65\x74\x20\x74\x6f\x20\x76\x69\x73\x69\x74\x20\x40\x53\x68\x72\x75\x74\x69\x42\x6f\x74\x73"
@@ -196,4 +198,4 @@ if __name__ == "__main__":
 # ===========================================
 
 
-# ❤️ Love From ShrutiBots 
+# ❤️ Love From ShrutiBots
