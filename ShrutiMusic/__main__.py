@@ -21,10 +21,10 @@
 
 import os
 import threading
-import Flask
+from flask import Flask
 from ShrutiMusic import app  # your bot’s main import
 
-flask_app = Flask(name)
+flask_app = Flask(__name__)
 
 @flask_app.route("/")
 def home():
