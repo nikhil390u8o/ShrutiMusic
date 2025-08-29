@@ -3,7 +3,7 @@ services:
     name: shrutimusic
     runtime: python
     buildCommand: pip install --no-cache-dir -r requirements.txt
-    startCommand: bash start
+    startCommand: python3 -m ShrutiMusic
     envVars:
       - key: API_ID
         value: "29448785"
