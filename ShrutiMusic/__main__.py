@@ -37,15 +37,21 @@ def run_flask():
     flask_app.run(host="0.0.0.0", port=port)
 
 def run_bot():
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(app.start())  # start bot
-    loop.run_until_complete(idle())       # keep listening for updates
+    async def start_bot():
+        await app.start()
+        print("✅ Bot started and listening for updates...")
+        await idle()
+        await app.stop()
+        print("⛔ Bot stopped.")
+
+    asyncio.run(start_bot())
 
 if __name__ == "__main__":
     # Start Flask in background
     threading.Thread(target=run_flask).start()
     # Start Telegram bot
     run_bot()
+
 
 import asyncio
 import importlib
