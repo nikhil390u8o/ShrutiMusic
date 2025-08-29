@@ -37,7 +37,7 @@ def run_flask():
 def run_bot():
     app.run()
 
-if name == "main":
+if __name__ == "__main__":
     # Start Flask in background
     threading.Thread(target=run_flask).start()
     # Start Telegram bot
