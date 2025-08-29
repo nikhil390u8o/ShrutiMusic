@@ -19,6 +19,29 @@
 # Contact for permissions:
 # Email: badboy809075@gmail.com
 
+import os
+import threading
+from flask import Flask
+from ShrutiMusic import app  # your bot’s main import
+
+flask_app = Flask(name)
+
+@flask_app.route("/")
+def home():
+    return "Bot is running!", 200
+
+def run_flask():
+    port = int(os.environ.get("PORT", 5000))
+    flask_app.run(host="0.0.0.0", port=port)
+
+def run_bot():
+    app.run()
+
+if name == "main":
+    # Start Flask in background
+    threading.Thread(target=run_flask).start()
+    # Start Telegram bot
+    run_bot()
 
 import asyncio
 import importlib
