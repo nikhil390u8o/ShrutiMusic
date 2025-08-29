@@ -19,9 +19,10 @@
 # Contact for permissions:
 # Email: badboy809075@gmail.com
 
-from pyrogram.types import InlineKeyboardButton
 import config
 from ShrutiMusic import app
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+
 
 def start_panel(_):
     buttons = [
@@ -37,6 +38,7 @@ def start_panel(_):
         ],
     ]
     return buttons
+
 
 def private_panel(_):
     buttons = [
@@ -69,6 +71,7 @@ def private_panel(_):
     ]
     return buttons
 
+
 def about_panel(_):
     buttons = [
         [
@@ -80,6 +83,7 @@ def about_panel(_):
         ]
     ]
     return buttons
+
 
 def owner_panel(_):
     buttons = [
@@ -96,6 +100,17 @@ def owner_panel(_):
         ]
     ]
     return buttons
+
+
+# 🔥 FIX: Support Markup for ping.py
+def supp_markup(_):
+    buttons = [
+        [
+            InlineKeyboardButton(text=_["S_B_2"], url=config.SUPPORT_GROUP),
+            InlineKeyboardButton(text=_["S_B_6"], url=config.SUPPORT_CHANNEL),
+        ]
+    ]
+    return InlineKeyboardMarkup(buttons)
 
 
 # ©️ Copyright Reserved - @NoxxOP  Nand Yaduwanshi
