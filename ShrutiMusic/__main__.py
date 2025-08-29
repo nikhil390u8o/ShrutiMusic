@@ -18,41 +18,6 @@
 #
 # Contact for permissions:
 # Email: badboy809075@gmail.com
-
-import os
-import threading
-import asyncio
-from flask import Flask
-from ShrutiMusic import app  # your bot’s main import
-from pyrogram import idle
-
-flask_app = Flask(__name__)
-
-@flask_app.route("/")
-def home():
-    return "Bot is running!", 200
-
-def run_flask():
-    port = int(os.environ.get("PORT", 5000))
-    flask_app.run(host="0.0.0.0", port=port)
-
-def run_bot():
-    async def start_bot():
-        await app.start()
-        print("✅ Bot started and listening for updates...")
-        await idle()
-        await app.stop()
-        print("⛔ Bot stopped.")
-
-    asyncio.run(start_bot())
-
-if __name__ == "__main__":
-    # Start Flask in background
-    threading.Thread(target=run_flask).start()
-    # Start Telegram bot
-    run_bot()
-
-
 import asyncio
 import importlib
 from pyrogram import idle
