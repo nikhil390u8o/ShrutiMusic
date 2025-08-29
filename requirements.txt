@@ -1,6 +1,5 @@
 pyrogram
 tgcrypto
-flask
 gunicorn
 gTTS
 aiofiles
@@ -39,5 +38,6 @@ youtube-search-python
 # 🔗 GitHub : https://github.com/NoxxOP/ShrutiMusic
 # 📢 Telegram Channel : https://t.me/ShrutiBots
 # ===========================================
+
 
 
