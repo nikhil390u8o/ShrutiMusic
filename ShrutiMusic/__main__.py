@@ -1,3 +1,24 @@
+# Copyright (c) 2025 Nand Yaduwanshi <NoxxOP>
+# Location: Supaul, Bihar
+#
+# All rights reserved.
+#
+# This code is the intellectual property of Nand Yaduwanshi.
+# You are not allowed to copy, modify, redistribute, or use this
+# code for commercial or personal projects without explicit permission.
+#
+# Allowed:
+# - Forking for personal learning
+# - Submitting improvements via pull requests
+#
+# Not Allowed:
+# - Claiming this code as your own
+# - Re-uploading without credit or permission
+# - Selling or using commercially
+#
+# Contact for permissions:
+# Email: badboy809075@gmail.com
+
 import asyncio
 import importlib
 from pyrogram import idle
@@ -11,7 +32,7 @@ from ShrutiMusic.plugins import ALL_MODULES
 from ShrutiMusic.utils.database import get_banned_users, get_gbanned
 from config import BANNED_USERS
 
-# Bot Commands List
+# ================= Bot Commands =================
 COMMANDS = [
     BotCommand("start", "🚀 Start bot"),
     BotCommand("help", "❓ Help menu"),
@@ -95,6 +116,7 @@ COMMANDS = [
     BotCommand("bots", "🤖 Get list of bots in group")
 ]
 
+# ================= Setup Bot Commands =================
 async def setup_bot_commands():
     try:
         await app.set_bot_commands(COMMANDS)
@@ -102,6 +124,8 @@ async def setup_bot_commands():
     except Exception as e:
         LOGGER("ShrutiMusic").error(f"Failed to set bot commands: {str(e)}")
 
+
+# ================= Bot Initialization =================
 async def init():
     if not any([config.STRING1, config.STRING2, config.STRING3, config.STRING4, config.STRING5]):
         LOGGER(__name__).error("Assistant client variables not defined, exiting...")
@@ -113,6 +137,7 @@ async def init():
         users = await get_gbanned()
         for user_id in users:
             BANNED_USERS.add(user_id)
+
         users = await get_banned_users()
         for user_id in users:
             BANNED_USERS.add(user_id)
@@ -122,20 +147,13 @@ async def init():
     await app.start()
     await setup_bot_commands()
 
-    # ✅ Skip empty modules
+    # ================= Import Plugins =================
     for all_module in ALL_MODULES:
-    if not all_module.strip():  # skip empty names
-        continue
-    try:
+        if not all_module.strip():  # skip empty names
+            continue
         importlib.import_module(f"ShrutiMusic.plugins.{all_module}")
-        LOGGER("ShrutiMusic.plugins").info(f"Imported {all_module} successfully")
-    except ModuleNotFoundError as e:
-        LOGGER("ShrutiMusic.plugins").error(f"Module {all_module} not found: {e}")
-    except Exception as e:
-        LOGGER("ShrutiMusic.plugins").error(f"Failed to import {all_module}: {e}")
 
-
-        LOGGER("ShrutiMusic.plugins").info("Successfully Imported Modules...")
+    LOGGER("ShrutiMusic.plugins").info("Successfully Imported Modules...")
 
     await userbot.start()
     await Aviax.start()
@@ -162,5 +180,7 @@ async def init():
     await userbot.stop()
     LOGGER("ShrutiMusic").info("Stopping Shruti Music Bot...🥺")
 
+
+# ================= Run Bot =================
 if __name__ == "__main__":
     asyncio.get_event_loop().run_until_complete(init())
