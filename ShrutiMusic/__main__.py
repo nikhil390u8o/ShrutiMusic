@@ -87,6 +87,95 @@ COMMANDS = [
     BotCommand("rmwarns", "🗑 Remove all warnings"),
     BotCommand("warns", "📋 Show user warnings"),
     BotCommand("kick", "👢 Kick user"),
+# Copyright (c) 2025 Nand Yaduwanshi <NoxxOP>
+# Location: Supaul, Bihar
+#
+# All rights reserved.
+#
+# This code is the intellectual property of Nand Yaduwanshi.
+# You are not allowed to copy, modify, redistribute, or use this
+# code for commercial or personal projects without explicit permission.
+#
+# Allowed:
+# - Forking for personal learning
+# - Submitting improvements via pull requests
+#
+# Not Allowed:
+# - Claiming this code as your own
+# - Re-uploading without credit or permission
+# - Selling or using commercially
+#
+# Contact for permissions:
+# Email: badboy809075@gmail.com
+
+
+import asyncio
+import importlib
+from pyrogram import idle
+from pyrogram.types import BotCommand
+from pytgcalls.exceptions import NoActiveGroupCall
+import config
+from ShrutiMusic import LOGGER, app, userbot
+from ShrutiMusic.core.call import Aviax  # <- fixed here
+from ShrutiMusic.misc import sudo
+from ShrutiMusic.plugins import ALL_MODULES
+from ShrutiMusic.utils.database import get_banned_users, get_gbanned
+from config import BANNED_USERS
+
+# Bot Commands List
+COMMANDS = [
+    BotCommand("start", "🚀 Start bot"),
+    BotCommand("help", "❓ Help menu"),
+    BotCommand("ping", "📡 Ping and system stats"),
+    BotCommand("play", "🎵 Start streaming the requested track"),
+    BotCommand("vplay", "📹 Start video streaming"),
+    BotCommand("playforce", "⚠️ Force play audio track"),
+    BotCommand("vplayforce", "⚠️ Force play video track"),
+    BotCommand("pause", "⏸ Pause the stream"),
+    BotCommand("resume", "▶️ Resume the stream"),
+    BotCommand("skip", "⏭ Skip the current track"),
+    BotCommand("end", "🛑 End the stream"),
+    BotCommand("stop", "🛑 Stop the stream"),
+    BotCommand("player", "🎛 Get interactive player panel"),
+    BotCommand("queue", "📄 Show track queue"),
+    BotCommand("auth", "➕ Add a user to auth list"),
+    BotCommand("unauth", "➖ Remove a user from auth list"),
+    BotCommand("authusers", "👥 Show list of auth users"),
+    BotCommand("cplay", "📻 Channel audio play"),
+    BotCommand("cvplay", "📺 Channel video play"),
+    BotCommand("cplayforce", "🚨 Channel force audio play"),
+    BotCommand("cvplayforce", "🚨 Channel force video play"),
+    BotCommand("channelplay", "🔗 Connect group to channel"),
+    BotCommand("loop", "🔁 Enable/disable loop"),
+    BotCommand("stats", "📊 Bot stats"),
+    BotCommand("shuffle", "🔀 Shuffle the queue"),
+    BotCommand("seek", "⏩ Seek forward"),
+    BotCommand("seekback", "⏪ Seek backward"),
+    BotCommand("song", "🎶 Download song (mp3/mp4)"),
+    BotCommand("speed", "⏩ Adjust audio playback speed (group)"),
+    BotCommand("cspeed", "⏩ Adjust audio speed (channel)"),
+    BotCommand("tagall", "📢 Tag everyone"),
+    BotCommand("admins", "🛡 Tag all admins"),
+    BotCommand("tgm", "🖼 Convert image to URL"),
+    BotCommand("vid", "🎞 Download video from social media"),
+    BotCommand("dice", "🎲 Roll a dice"),
+    BotCommand("ludo", "🎲 Play ludo"),
+    BotCommand("dart", "🎯 Throw a dart"),
+    BotCommand("basket", "🏀 Play basketball"),
+    BotCommand("football", "⚽ Play football"),
+    BotCommand("slot", "🎰 Play slot"),
+    BotCommand("jackpot", "🎰 Play jackpot"),
+    BotCommand("bowling", "🎳 Play bowling"),
+    BotCommand("ban", "🚫 Ban a user"),
+    BotCommand("banall", "⚠️ Ban all users"),
+    BotCommand("sban", "🧹 Delete & ban user"),
+    BotCommand("tban", "⏳ Temporary ban"),
+    BotCommand("unban", "✅ Unban a user"),
+    BotCommand("warn", "⚠️ Warn a user"),
+    BotCommand("swarn", "🧹 Delete & warn user"),
+    BotCommand("rmwarns", "🗑 Remove all warnings"),
+    BotCommand("warns", "📋 Show user warnings"),
+    BotCommand("kick", "👢 Kick user"),
     BotCommand("skick", "🧹 Delete msg & kick"),
     BotCommand("purge", "🧽 Purge messages"),
     BotCommand("del", "❌ Delete message"),
@@ -161,10 +250,10 @@ async def init():
     LOGGER("ShrutiMusic.plugins").info("Successfully Imported Modules...")
 
     await userbot.start()
-    await Nand.start()
+    await Aviax.start()  # <- fixed here
 
     try:
-        await Nand.stream_call("https://te.legra.ph/file/29f784eb49d230ab62e9e.mp4")
+        await Aviax.stream_call("https://te.legra.ph/file/29f784eb49d230ab62e9e.mp4")  # <- fixed here
     except NoActiveGroupCall:
         LOGGER("ShrutiMusic").error(
             "Please turn on the videochat of your log group\channel.\n\nStopping Bot..."
@@ -173,7 +262,7 @@ async def init():
     except:
         pass
 
-    await Nand.decorators()
+    await Aviax.decorators()  # <- fixed here
 
     LOGGER("ShrutiMusic").info(
         "\x53\x68\x72\x75\x74\x69\x20\x4d\x75\x73\x69\x63\x20\x53\x74\x61\x72\x74\x65\x64\x20\x53\x75\x63\x63\x65\x73\x73\x66\x75\x6c\x6c\x79\x2e\x0a\x0a\x44\x6f\x6e\x27\x74\x20\x66\x6f\x72\x67\x65\x74\x20\x74\x6f\x20\x76\x69\x73\x69\x74\x20\x40\x53\x68\x72\x75\x74\x69\x42\x6f\x74\x73"
@@ -187,6 +276,7 @@ async def init():
 
 if __name__ == "__main__":
     asyncio.get_event_loop().run_until_complete(init())
+
 
 
 # ©️ Copyright Reserved - @NoxxOP  Nand Yaduwanshi
