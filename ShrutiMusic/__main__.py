@@ -124,11 +124,18 @@ async def init():
 
     # ✅ Skip empty modules
     for all_module in ALL_MODULES:
-        if not all_module:
-            continue
+    if not all_module.strip():  # skip empty names
+        continue
+    try:
         importlib.import_module(f"ShrutiMusic.plugins.{all_module}")
+        LOGGER("ShrutiMusic.plugins").info(f"Imported {all_module} successfully")
+    except ModuleNotFoundError as e:
+        LOGGER("ShrutiMusic.plugins").error(f"Module {all_module} not found: {e}")
+    except Exception as e:
+        LOGGER("ShrutiMusic.plugins").error(f"Failed to import {all_module}: {e}")
 
-    LOGGER("ShrutiMusic.plugins").info("Successfully Imported Modules...")
+
+        LOGGER("ShrutiMusic.plugins").info("Successfully Imported Modules...")
 
     await userbot.start()
     await Aviax.start()
