@@ -177,19 +177,13 @@ async def start_pm(client, message: Message, _):
                 title, duration, views, published, channellink, channel, app.mention
             )
             key = InlineKeyboardMarkup(
-    [
-        [
-            InlineKeyboardButton(
-                text=_["S_B_8"],
-                url=link if link.startswith("https://") else f"https://{link}"
-            ),
-            InlineKeyboardButton(
-                text=_["S_B_9"],
-                url=config.SUPPORT_GROUP if config.SUPPORT_GROUP.startswith("https://") else f"https://{config.SUPPORT_GROUP}"
-            ),
-        ],
-    ]
-)
+                [
+                    [
+                        InlineKeyboardButton(text=_["S_B_8"], url="https://t.me/+TQnGqdM7981lNTI9"),
+                        InlineKeyboardButton(text=_["S_B_9"], url="https://t.me/+TQnGqdM7981lNTI9"),
+                    ],
+                ]
+            )
 
             await m.delete()
             await app.send_photo(
