@@ -146,7 +146,8 @@ async def init():
     await setup_bot_commands()
 
     for all_module in ALL_MODULES:
-        importlib.import_module(f"ShrutiMusic.plugins.{all_module}")
+        importlib.import_module(f"ShrutiMusic.plugins.{all_module}")  # ✅ FIXED
+
 
     LOGGER("ShrutiMusic.plugins").info("Successfully Imported Modules...")
 
