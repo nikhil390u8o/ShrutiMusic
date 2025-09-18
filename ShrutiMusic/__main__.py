@@ -148,17 +148,16 @@ async def init():
     await setup_bot_commands()
 
     # ================= Import Plugins =================
-    # ================= Import Plugins =================
-for all_module in ALL_MODULES:
-    if not all_module.strip():  # skip empty names
-        continue
-    try:
-        importlib.import_module(f"ShrutiMusic.plugins.{all_module}")
-        LOGGER("ShrutiMusic.plugins").info(f"Imported plugin: {all_module}")
-    except ModuleNotFoundError:
-        LOGGER("ShrutiMusic.plugins").warning(f"Plugin not found: {all_module}")
-    except Exception as e:
-        LOGGER("ShrutiMusic.plugins").error(f"Failed to import {all_module}: {e}")
+    for all_module in ALL_MODULES:
+        if not all_module.strip():  # skip empty names
+            continue
+        try:
+            importlib.import_module(f"ShrutiMusic.plugins.{all_module}")
+            LOGGER("ShrutiMusic.plugins").info(f"Imported plugin: {all_module}")
+        except ModuleNotFoundError:
+            LOGGER("ShrutiMusic.plugins").warning(f"Plugin not found: {all_module}")
+        except Exception as e:
+            LOGGER("ShrutiMusic.plugins").error(f"Failed to import {all_module}: {e}")
 
     await userbot.start()
     await Aviax.start()
@@ -188,4 +187,4 @@ for all_module in ALL_MODULES:
 
 # ================= Run Bot =================
 if __name__ == "__main__":
-    asyncio.get_event_loop().run_until_complete(init())
+    asyncio.run(init())
