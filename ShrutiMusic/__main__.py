@@ -19,9 +19,32 @@
 # Contact for permissions:
 # Email: badboy809075@gmail.com
 
+# Copyright (c) 2025 Nand Yaduwanshi <NoxxOP>
+# Location: Supaul, Bihar
+#
+# All rights reserved.
+#
+# This code is the intellectual property of Nand Yaduwanshi.
+# You are not allowed to copy, modify, redistribute, or use this
+# code for commercial or personal projects without explicit permission.
+#
+# Allowed:
+# - Forking for personal learning
+# - Submitting improvements via pull requests
+#
+# Not Allowed:
+# - Claiming this code as your own
+# - Re-uploading without credit or permission
+# - Selling or using commercially
+#
+# Contact for permissions:
+# Email: badboy809075@gmail.com
+
 import asyncio
 import importlib
+import time
 from pyrogram import idle
+from pyrogram.errors import FloodWait
 from pyrogram.types import BotCommand
 from pytgcalls.exceptions import NoActiveGroupCall
 import config
@@ -116,16 +139,14 @@ COMMANDS = [
     BotCommand("bots", "🤖 Get list of bots in group")
 ]
 
-# ================= Setup Bot Commands =================
 async def setup_bot_commands():
     try:
         await app.set_bot_commands(COMMANDS)
-        LOGGER("ShrutiMusic").info("Bot commands set successfully!")
+        LOGGER("ShrutiMusic").info("✅ Bot commands set successfully!")
     except Exception as e:
-        LOGGER("ShrutiMusic").error(f"Failed to set bot commands: {str(e)}")
+        LOGGER("ShrutiMusic").error(f"❌ Failed to set bot commands: {str(e)}")
 
 
-# ================= Bot Initialization =================
 async def init():
     if not any([config.STRING1, config.STRING2, config.STRING3, config.STRING4, config.STRING5]):
         LOGGER(__name__).error("Assistant client variables not defined, exiting...")
@@ -135,57 +156,56 @@ async def init():
 
     try:
         users = await get_gbanned()
-        for user_id in users:
-            BANNED_USERS.add(user_id)
-
+        BANNED_USERS.update(users)
         users = await get_banned_users()
-        for user_id in users:
-            BANNED_USERS.add(user_id)
+        BANNED_USERS.update(users)
     except Exception as e:
-        LOGGER("ShrutiMusic").warning(f"Failed to load banned users: {e}")
+        LOGGER("ShrutiMusic").warning(f"⚠️ Failed to load banned users: {e}")
 
-    # Start bot client
     await app.start()
+    await setup_bot_commands()
 
-    # Import plugins safely
     for all_module in ALL_MODULES:
         if not all_module.strip():
             continue
         try:
             importlib.import_module(f"ShrutiMusic.plugins.{all_module}")
-            LOGGER("ShrutiMusic.plugins").info(f"Imported plugin: {all_module}")
+            LOGGER("ShrutiMusic.plugins").info(f"✅ Imported plugin: {all_module}")
         except ModuleNotFoundError:
-            LOGGER("ShrutiMusic.plugins").warning(f"Plugin not found: {all_module}")
+            LOGGER("ShrutiMusic.plugins").warning(f"⚠️ Plugin not found: {all_module}")
         except Exception as e:
-            LOGGER("ShrutiMusic.plugins").error(f"Failed to import {all_module}: {e}")
+            LOGGER("ShrutiMusic.plugins").error(f"❌ Failed to import {all_module}: {e}")
 
-    # Start userbot & voice client
     await userbot.start()
     await Aviax.start()
 
     try:
         await Aviax.stream_call("https://te.legra.ph/file/29f784eb49d230ab62e9e.mp4")
     except NoActiveGroupCall:
-        LOGGER("ShrutiMusic").error(
-            "Please turn on the videochat of your log group/channel.\nStopping Bot..."
-        )
+        LOGGER("ShrutiMusic").error("❌ Please turn on the videochat of your log group/channel.\nStopping Bot...")
         return
-    except Exception:
-        pass
 
     await Aviax.decorators()
 
     LOGGER("ShrutiMusic").info("✅ Shruti Music Started Successfully!")
-
     await idle()
 
-    LOGGER("ShrutiMusic").info("Stopping Shruti Music Bot...")
+    LOGGER("ShrutiMusic").info("🛑 Stopping Shruti Music Bot...")
     await app.stop()
     await userbot.stop()
 
 
-if __name__ == "__main__":
+async def main():
     try:
-        asyncio.run(init())
+        await init()
+    except FloodWait as e:
+        LOGGER("ShrutiMusic").warning(f"⚠️ FloodWait: Sleeping {e.value} seconds before retrying...")
+        time.sleep(e.value)
+        await init()
     except KeyboardInterrupt:
         LOGGER("ShrutiMusic").info("Bot stopped manually.")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+
