@@ -129,7 +129,7 @@ async def setup_bot_commands():
 async def init():
     if not any([config.STRING1, config.STRING2, config.STRING3, config.STRING4, config.STRING5]):
         LOGGER(__name__).error("Assistant client variables not defined, exiting...")
-        exit()
+        return
 
     await sudo()
 
@@ -144,12 +144,12 @@ async def init():
     except Exception as e:
         LOGGER("ShrutiMusic").warning(f"Failed to load banned users: {e}")
 
+    # Start bot client
     await app.start()
-    await setup_bot_commands()
 
-    # ================= Import Plugins =================
+    # Import plugins safely
     for all_module in ALL_MODULES:
-        if not all_module.strip():  # skip empty names
+        if not all_module.strip():
             continue
         try:
             importlib.import_module(f"ShrutiMusic.plugins.{all_module}")
@@ -159,6 +159,7 @@ async def init():
         except Exception as e:
             LOGGER("ShrutiMusic.plugins").error(f"Failed to import {all_module}: {e}")
 
+    # Start userbot & voice client
     await userbot.start()
     await Aviax.start()
 
@@ -168,23 +169,23 @@ async def init():
         LOGGER("ShrutiMusic").error(
             "Please turn on the videochat of your log group/channel.\nStopping Bot..."
         )
-        exit()
+        return
     except Exception:
         pass
 
     await Aviax.decorators()
 
-    LOGGER("ShrutiMusic").info(
-        "Shruti Music Started Successfully.\n\nDon't forget to visit @ShrutiBots"
-    )
+    LOGGER("ShrutiMusic").info("✅ Shruti Music Started Successfully!")
 
     await idle()
 
+    LOGGER("ShrutiMusic").info("Stopping Shruti Music Bot...")
     await app.stop()
     await userbot.stop()
-    LOGGER("ShrutiMusic").info("Stopping Shruti Music Bot...🥺")
 
 
-# ================= Run Bot =================
 if __name__ == "__main__":
-    asyncio.run(init())
+    try:
+        asyncio.run(init())
+    except KeyboardInterrupt:
+        LOGGER("ShrutiMusic").info("Bot stopped manually.")
